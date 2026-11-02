@@ -19,17 +19,21 @@
   --heat:237,25,68;
 }
 *{box-sizing:border-box}
-html{background:var(--bg)}
+html{background:var(--bg);scroll-padding-top:120px}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Mulish",system-ui,sans-serif;font-weight:400}
 h1,h2,h3{font-family:"Mulish",sans-serif;font-weight:800}
 
 header{background:var(--rojo);color:#fff;position:sticky;top:0;z-index:5}
-.hwrap{max-width:1500px;margin:0 auto;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:14px 24px}
+.hwrap{max-width:1500px;margin:0 auto;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:14px 24px 10px}
 .brand{display:flex;align-items:center;gap:20px}
 .brand svg{height:46px;width:auto;display:block}
 .brand .sep{width:1px;height:38px;background:rgba(255,255,255,.45)}
 .brand h1{font-size:17px;margin:0;letter-spacing:.02em}
 .brand .file{font-size:12px;opacity:.85}
+nav{max-width:1500px;margin:0 auto;padding:0 24px 8px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{color:#fff;text-decoration:none;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;opacity:.85}
+nav a:hover{background:rgba(255,255,255,.16);opacity:1}
 main{padding:22px 24px 40px;max-width:1500px;margin:0 auto}
 footer{background:var(--rojo);color:#fff;font-size:12px}
 footer .fwrap{max-width:1500px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;letter-spacing:.04em}
@@ -52,8 +56,10 @@ header .btn.primary:hover{background:var(--rojo-suave);color:var(--rojo)}
 .eyebrow{font-size:12px;font-weight:800;color:var(--rojo);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
 .eyebrow span{color:var(--gris);margin-right:6px}
 .panel h2{font-size:17px;margin:0 0 2px}
+.panel h3{font-size:14px;margin:0 0 8px}
 .panel .sub{color:var(--muted);font-size:12.5px;margin:0 0 14px}
 .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.empty{color:var(--muted);font-size:13px;padding:18px;text-align:center;background:#F7F7F8;border-radius:10px}
 
 .filters{display:grid;gap:14px}
 .frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -63,38 +69,73 @@ header .btn.primary:hover{background:var(--rojo-suave);color:var(--rojo)}
 .chip small{opacity:.65;margin-left:5px}
 input[type=date],select{font:inherit;padding:5px 9px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
 input[type=date]:focus,select:focus{outline:2px solid var(--rojo);outline-offset:1px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{appearance:none;border:0;background:var(--panel);padding:5px 12px;font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--rojo);color:#fff}
 
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
 .kpi{background:var(--panel);border-radius:14px;padding:14px 18px;border-left:4px solid var(--rojo)}
 .kpi:nth-child(even){border-left-color:var(--gris-claro)}
-.kpi .v{font-size:28px;font-weight:900;font-variant-numeric:tabular-nums}
-.kpi .v small{font-size:13px;font-weight:700;color:var(--muted)}
-.kpi .l{color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.kpi .v{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.kpi .v small{font-size:12.5px;font-weight:700;color:var(--muted)}
+.kpi .l{color:var(--muted);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid2 > .panel{min-width:0}
 @media (max-width:1000px){.grid2{grid-template-columns:1fr}}
 .tablewrap{overflow-x:auto}
+.tablewrap.tall{max-height:560px;overflow:auto}
 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
 th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-th{font-size:11.5px;color:var(--gris);font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:var(--panel)}
+th{font-size:11.5px;color:var(--gris);font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:var(--panel);position:sticky;top:0;z-index:1}
 th:first-child,td:first-child{text-align:left}
+td.l,th.l{text-align:left}
 tfoot td{font-weight:800}
 tr.total td{border-top:2px solid var(--negro)}
-tbody tr{cursor:pointer}
+tbody tr.click{cursor:pointer}
 tbody tr:hover td{background-color:#FAFAFA}
 tbody tr.sel td{box-shadow:inset 0 0 0 999px rgba(237,25,68,.10)}
 tbody tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--rojo),inset 0 0 0 999px rgba(237,25,68,.10)}
 .bar{display:inline-block;height:8px;background:var(--rojo);border-radius:4px;vertical-align:middle;margin-right:7px}
+.bar.g{background:var(--gris-claro)}
 .good{color:#1a7f45;font-weight:700}.warn{color:var(--rojo);font-weight:700}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--rojo-suave);color:var(--rojo-osc)}
+.tag.g{background:#EDEDEE;color:#55565A}
+a.wa{color:var(--ink);font-weight:700;text-decoration:none;border-bottom:1px dashed var(--gris-claro)}
+a.wa:hover{color:var(--rojo);border-color:var(--rojo)}
 .chartbox{position:relative}
-.hidden{display:none}
+.hidden{display:none !important}
 .note{color:var(--muted);font-size:12px}
 .mapping{display:flex;flex-wrap:wrap;gap:14px}
 .mapping label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted);font-weight:700}
 details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700}
+
+/* Embudo */
+.funnel{display:grid;gap:8px}
+.frow2{display:grid;grid-template-columns:minmax(150px,220px) 1fr 110px 120px;gap:12px;align-items:center}
+.frow2 .fl{font-weight:700;font-size:13px}
+.ftrack{background:#F2F2F3;border-radius:6px;height:26px;overflow:hidden}
+.fbar{height:100%;border-radius:6px;min-width:2px}
+.frow2 .fv{font-weight:900;font-size:16px;text-align:right;font-variant-numeric:tabular-nums}
+.frow2 .fv small{font-size:12px;color:var(--muted);font-weight:700}
+.frow2 .fc{font-size:12px;color:var(--muted);text-align:right}
+.frow2 .fc b{color:var(--ink)}
+@media (max-width:700px){.frow2{grid-template-columns:1fr 90px}.frow2 .ftrack{grid-column:1/-1;order:3}.frow2 .fc{grid-column:1/-1;text-align:left;order:4}}
+
 @media (max-width:640px){
-  .hwrap,main,footer .fwrap{padding-left:16px;padding-right:16px}
+  .hwrap,main,footer .fwrap,nav{padding-left:16px;padding-right:16px}
   .flabel{min-width:100%}.brand .sep{display:none}.brand svg{height:38px}
+}
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  html,body{background:#fff}
+  header{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  footer,.kpi,.fbar,.bar,td,.tag,.chip{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  nav,.noprint,#filtersPanel .btn,details,.drop{display:none !important}
+  .panel{break-inside:avoid;box-shadow:none;border:1px solid var(--line)}
+  .tablewrap.tall{max-height:none;overflow:visible}
+  main{padding:10px 0}
+  .grid2{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -116,31 +157,37 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700
       <svg viewBox="0 0 336 157" role="img" aria-label="GO HOUSE Inmobiliaria" style="--lg-red:#fff;--lg-gray:#fff;--lg-text:#fff;--lg-sub:#fff"><use href="#logo"/></svg>
       <div class="sep"></div>
       <div>
-        <h1>Reporte de Leads por Usuario Asignado</h1>
+        <h1>Reporte Comercial de Leads</h1>
         <div class="file" id="fileName">Sin archivo cargado</div>
       </div>
     </div>
-    <div class="frow">
-      <button class="btn" id="exportBtn" disabled>Exportar resumen a Excel</button>
+    <div class="frow noprint">
+      <button class="btn" id="printBtn" disabled>Imprimir / PDF</button>
+      <button class="btn" id="exportBtn" disabled>Exportar a Excel</button>
       <label class="btn primary">Importar Excel<input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden></label>
     </div>
   </div>
+  <nav id="nav" class="hidden">
+    <a href="#s-filtros">Filtros</a><a href="#s-resumen">Resumen</a><a href="#s-usuarios">Usuarios</a><a href="#s-embudo">Embudo</a>
+    <a href="#s-calidad">Canales y proyectos</a><a href="#s-segmentos">Canal y segmento</a><a href="#s-tiempos">Tiempos</a>
+    <a href="#s-motivos">Motivos de pérdida</a><a href="#s-evolucion">Evolución</a><a href="#s-pendientes">Pendientes</a><a href="#s-detalle">Detalle</a>
+  </nav>
 </header>
 
 <main>
   <div class="drop" id="drop">
     <svg viewBox="0 0 336 157" aria-hidden="true"><use href="#logo"/></svg>
-    <h2>Arrastra aquí el Excel de leads</h2>
+    <h2>Arrastra aquí el Excel de leads exportado de Sperant</h2>
     <p>o usa el botón <b>Importar Excel</b>. El archivo se procesa solo en tu navegador, no se sube a ningún lado.</p>
   </div>
 
   <div id="dash" class="hidden">
-    <section class="panel">
+    <section class="panel" id="s-filtros">
       <div class="panel-head">
         <div><div class="eyebrow"><span>00</span>Filtros</div><p class="sub">Haz clic en un canal o proyecto para ocultarlo/mostrarlo. Lo que ocultes se recuerda para la próxima vez.</p></div>
         <button class="btn small" id="resetBtn">Limpiar filtros</button>
       </div>
-      <div class="filters">
+      <div class="filters" id="filtersPanel">
         <div class="frow"><span class="flabel">Canal origen</span>
           <button class="btn small" data-all="canal">Todos</button><button class="btn small" data-none="canal">Ninguno</button>
           <span id="chipsCanal" class="frow"></span></div>
@@ -152,50 +199,113 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700
         <div class="frow"><span class="flabel">Usuario asignado</span>
           <select id="userSel"><option value="">Todos los usuarios</option></select>
           <span class="note">También puedes hacer clic en una fila de las tablas o en una barra.</span></div>
+        <div class="note" id="activeFilters"></div>
         <details>
           <summary>Columnas del Excel usadas</summary>
+          <p class="note">Se detectan solas por el nombre del encabezado. Las marcadas como opcionales activan secciones extra si existen en el archivo.</p>
           <div class="mapping" id="mapping" style="margin-top:10px"></div>
         </details>
       </div>
     </section>
 
-    <section class="kpis" id="kpis"></section>
+    <section class="kpis" id="s-resumen"></section>
 
-    <section class="panel">
+    <section class="panel" id="s-usuarios">
       <div class="eyebrow"><span>01</span>Relación de usuarios asignados</div>
       <h2>Carga y atención por usuario</h2>
       <p class="sub">Tiempo de 1ª atención = F. Primera Interacción Manual − F. Asignación. Los leads reasignados (interacción anterior a la asignación actual) no entran en ese cálculo. No efectivos = Desestimados + No contesta/seguimiento.</p>
       <div class="tablewrap" id="tblRel"></div>
     </section>
 
-    <div class="grid2">
+    <section class="panel" id="s-embudo">
+      <div class="eyebrow"><span>02</span>Embudo comercial</div>
+      <h2>Embudo de conversión</h2>
+      <p class="sub">Se calcula con el segmento actual de cada lead: un lead en "Separación" cuenta también como que llegó a cita. Los leads que avanzaron y luego se desestimaron no aparecen en las etapas superiores.</p>
+      <div class="funnel" id="funnel"></div>
+      <h3 style="margin-top:22px">Conversión por usuario</h3>
+      <p class="sub">En verde, por encima del promedio del equipo; en rojo, por debajo de la mitad del promedio.</p>
+      <div class="tablewrap" id="tblFunnel"></div>
+    </section>
+
+    <section class="panel" id="s-calidad">
+      <div class="panel-head">
+        <div><div class="eyebrow"><span>03</span>Calidad de leads</div>
+          <h2>Rendimiento por <span id="qualTitle">canal origen</span></h2>
+          <p class="sub">Qué canal o proyecto trae leads que avanzan. "% a cita" = citas / leads.</p></div>
+        <div class="seg noprint" id="qualDim"><button data-v="canal" class="on">Canal</button><button data-v="proyecto">Proyecto</button></div>
+      </div>
+      <div class="tablewrap" id="tblQual"></div>
+    </section>
+
+    <div class="grid2" id="s-segmentos">
       <section class="panel">
-        <div class="eyebrow"><span>02</span>Canal origen</div>
+        <div class="eyebrow"><span>04</span>Canal origen</div>
         <h2>Canal origen por usuario asignado</h2><p class="sub">Cantidad de leads por canal de origen.</p>
         <div class="chartbox"><canvas id="chCanal"></canvas></div>
       </section>
       <section class="panel">
-        <div class="eyebrow"><span>03</span>Segmento actual</div>
-        <h2>Segmento actual por usuario asignado</h2><p class="sub">Cantidad de leads según su segmento actual, en orden de avance. No efectivos = Desestimados + No contesta/seguimiento.</p>
+        <div class="eyebrow"><span>05</span>Segmento actual</div>
+        <h2>Segmento actual por usuario asignado</h2><p class="sub">En orden de avance. No efectivos = Desestimados + No contesta/seguimiento.</p>
         <div class="chartbox"><canvas id="chSegmento"></canvas></div>
       </section>
     </div>
 
-    <section class="panel">
-      <div class="eyebrow"><span>04</span>Detalle</div>
+    <section class="panel" id="s-tiempos">
+      <div class="eyebrow"><span>06</span>Velocidad de respuesta</div>
+      <h2>Tiempo de 1ª atención por usuario</h2>
+      <p class="sub">Reparto de los leads de cada usuario según cuánto tardó la primera interacción manual. Los reasignados no se incluyen.</p>
+      <div class="chartbox"><canvas id="chTiempos"></canvas></div>
+    </section>
+
+    <section class="panel" id="s-motivos">
+      <div class="panel-head">
+        <div><div class="eyebrow"><span>07</span>Motivos de pérdida</div>
+          <h2>¿Por qué se pierden los leads?</h2>
+          <p class="sub">Según la columna Razón de desistimiento. Los desestimados sin razón aparecen como "(Sin motivo registrado)".</p></div>
+        <div class="frow noprint"><span class="note">Cruzar con</span>
+          <div class="seg" id="motDim"><button data-v="usuario" class="on">Usuario</button><button data-v="canal">Canal</button><button data-v="proyecto">Proyecto</button></div></div>
+      </div>
+      <div id="motivosBody">
+        <div class="empty hidden" id="motEmpty"></div>
+        <div class="grid2" style="gap:18px">
+          <div class="chartbox"><canvas id="chMotivos"></canvas></div>
+          <div class="tablewrap" id="tblMotivos"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="s-evolucion">
+      <div class="eyebrow"><span>08</span>Evolución</div>
+      <h2>Leads asignados en el tiempo</h2>
+      <p class="sub" id="evoSub">Por fecha de asignación y canal origen. La línea muestra las citas de esos leads.</p>
+      <div class="chartbox" style="height:340px"><canvas id="chEvo"></canvas></div>
+    </section>
+
+    <section class="panel" id="s-pendientes">
+      <div class="panel-head">
+        <div><div class="eyebrow"><span>09</span>Seguimiento</div>
+          <h2>Leads pendientes de gestión</h2>
+          <p class="sub">Leads sin primera interacción manual, o en "Nuevo"/"Por contactar" con más de 3 días desde la asignación. Antigüedad contada hasta hoy. Haz clic en el celular para abrir WhatsApp.</p></div>
+        <button class="btn small noprint" id="exportPend">Exportar pendientes</button>
+      </div>
+      <div class="tablewrap tall" id="tblPend"></div>
+    </section>
+
+    <section class="panel" id="s-detalle">
+      <div class="eyebrow"><span>10</span>Detalle</div>
       <h2>Tabla: canal origen por usuario asignado</h2><p class="sub">El rojo más intenso indica más leads.</p>
       <div class="tablewrap" id="tblCanal"></div>
     </section>
 
     <section class="panel">
-      <div class="eyebrow"><span>05</span>Detalle</div>
+      <div class="eyebrow"><span>11</span>Detalle</div>
       <h2>Tabla: segmento actual por usuario asignado</h2><p class="sub">El rojo más intenso indica más leads.</p>
       <div class="tablewrap" id="tblSegmento"></div>
     </section>
   </div>
 </main>
 
-<footer><div class="fwrap"><span>GO HOUSE · INMOBILIARIA</span><span>Reporte de leads</span></div></footer>
+<footer><div class="fwrap"><span>GO HOUSE · INMOBILIARIA</span><span id="footDate">Reporte comercial de leads</span></div></footer>
 
 <script>
 const FIELDS = {
@@ -203,20 +313,28 @@ const FIELDS = {
   canal:    {label:'Canal Origen',                  keys:['canal origen']},
   proyecto: {label:'Proyecto Origen',               keys:['proyecto origen']},
   segmento: {label:'Segmento Actual',               keys:['segmento actual']},
-  fasig:    {label:'F. Asignación',                 keys:['f. asignacion','fecha asignacion']},
-  fpi:      {label:'F. Primera Interacción Manual', keys:['f. primera interaccion manual','primera interaccion manual','primera interaccion']},
+  fasig:    {label:'F. Asignación',                 keys:['f. asignacion','fecha asignacion','fecha de asignacion']},
+  fpi:      {label:'F. Primera Interacción Manual', keys:['f. primera interaccion manual','fecha primera interaccion manual','primera interaccion manual']},
+  razon:    {label:'Razón de desistimiento',        keys:['razon de desistimiento','motivo de desistimiento','razon desistimiento'], opt:true},
+  nombres:  {label:'Nombres',                       keys:['nombres','nombre'], opt:true},
+  apellidos:{label:'Apellidos',                     keys:['apellidos'], opt:true},
+  celular:  {label:'Celular',                       keys:['celular','telefono principal','telefono'], opt:true},
 };
 // Orden del embudo y colores derivados de la paleta de marca (rojo, negro, grises)
-const SEG_ORDER = ['nuevo','contactado','recontactado','calificado/seguimiento potencial','cita agendada','cita realizada','separacion','no efectivos'];
-const SEG_COLORS = {'nuevo':'#808285','contactado':'#55565A','recontactado':'#2E2F31',
-  'calificado/seguimiento potencial':'#F7A1B3','cita agendada':'#F24D6E','cita realizada':'#ED1944','separacion':'#8E0E29','no efectivos':'#D9DADB'};
-// Segmentos que se agrupan como "No efectivos" en el gráfico y la tabla de segmento actual
-const NO_EFECTIVOS = ['desestimados','no contesta/seguimiento'];
+const SEG_ORDER = ['nuevo','por contactar','contactado','recontactado','calificado/seguimiento potencial','cita agendada','cita realizada','separacion','no efectivos'];
+const SEG_COLORS = {'nuevo':'#808285','por contactar':'#9C9DA0','contactado':'#55565A','recontactado':'#2E2F31',
+  'calificado/seguimiento potencial':'#F7A1B3','cita agendada':'#F24D6E','cita realizada':'#ED1944','separacion':'#8E0E29','no efectivos':'#D9DADB','(sin dato)':'#EFEFF0'};
 const PALETTE = ['#ED1944','#000000','#808285','#F5758F','#B9BABC','#8E0E29','#4A4B4D','#FAC0CC','#2E2F31','#D9DADB','#C2143A','#6B6C6F','#F9D3DB','#A5A6A8'];
+const TRAMOS = [
+  {l:'< 1 h', max:1, c:'#8E0E29'}, {l:'1–4 h', max:4, c:'#ED1944'}, {l:'4–24 h', max:24, c:'#F5758F'},
+  {l:'1–3 días', max:72, c:'#B9BABC'}, {l:'> 3 días', max:Infinity, c:'#808285'},
+];
+const FUNNEL_STEPS = ['Leads asignados','Atendidos (con 1ª interacción)','Llegaron a cita','Cita realizada o más','Separación / venta'];
 const LS_KEY = 'gohouse.reporteLeads.ocultos';
+const PEND_LIMIT = 300;
 
 let headers = [], raw = [], rows = [], map = {};
-let state = {canalOff:new Set(), proyectoOff:new Set(), from:'', to:'', user:''};
+let state = {canalOff:new Set(), proyectoOff:new Set(), from:'', to:'', user:'', qualDim:'canal', motDim:'usuario'};
 let charts = {}, lastSummary = null;
 
 const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
@@ -227,6 +345,29 @@ const pct = (a,b) => b ? (a*100/b).toFixed(1)+'%' : '–';
 const median = a => { if (!a.length) return null; const s = [...a].sort((x,y)=>x-y), m = s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
 const dur = h => h == null ? '–' : h < 1 ? Math.round(h*60)+' min' : h < 48 ? h.toFixed(1)+' h' : (h/24).toFixed(1)+' días';
 const segKey = s => norm(s);
+const has = k => map[k] >= 0;
+
+// Etapa comercial a partir del segmento actual. Se usan palabras clave para tolerar
+// segmentos nuevos o renombrados en Sperant.
+function stageOf(seg){
+  const k = segKey(seg);
+  if (k === '(sin dato)') return 'otro';
+  if (k.includes('desestim') || k.includes('no contesta') || k.includes('descart') || k.includes('perdid')) return 'noef';
+  if (/separ|venta|vendid|minuta|contrato|cierre/.test(k)) return 4;
+  if (/cita realizada|visita realizada|cita efectiva/.test(k)) return 3;
+  if (/cita|visita/.test(k)) return 2;
+  if (/nuevo|por contactar|sin contactar/.test(k)) return 0;
+  return 1;
+}
+const isNum = s => typeof s === 'number';
+// Orden de columnas de segmento: primero por etapa comercial, luego por el orden conocido de Sperant
+function segRank(seg){
+  if (seg === 'No efectivos') return 500;
+  const st = stageOf(seg), i = SEG_ORDER.indexOf(segKey(seg));
+  return (isNum(st) ? st*100 : st === 'noef' ? 500 : 600) + (i < 0 ? 50 : i);
+}
+const STAGE_COLORS = ['#808285','#55565A','#F24D6E','#ED1944','#8E0E29'];
+const segColor = (seg, i) => SEG_COLORS[segKey(seg)] || (isNum(stageOf(seg)) ? STAGE_COLORS[stageOf(seg)] : PALETTE[i % PALETTE.length]);
 
 function loadHidden(){ try { const o = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); state.canalOff = new Set(o.canal||[]); state.proyectoOff = new Set(o.proyecto||[]); } catch(e){} }
 function saveHidden(){ try { localStorage.setItem(LS_KEY, JSON.stringify({canal:[...state.canalOff], proyecto:[...state.proyectoOff]})); } catch(e){} }
@@ -241,20 +382,35 @@ document.addEventListener('drop', e => e.dataTransfer.files[0] && readFile(e.dat
 function readFile(file){
   const r = new FileReader();
   r.onload = e => {
-    const wb = XLSX.read(e.target.result, {type:'array', cellDates:true});
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const aoa = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:true});
+    let wb;
+    try { wb = XLSX.read(e.target.result, {type:'array', cellDates:true}); }
+    catch(err){ alert('No se pudo leer el archivo. Verifica que sea un Excel (.xlsx) exportado de Sperant.'); return; }
+    // Usa la primera hoja que tenga la columna de usuario asignado; si ninguna, la primera
+    let ws = wb.Sheets[wb.SheetNames[0]], aoa = null;
+    for (const name of wb.SheetNames) {
+      const a = XLSX.utils.sheet_to_json(wb.Sheets[name], {header:1, defval:null, raw:true});
+      const hi = findHeaderRow(a);
+      if (hi >= 0) { aoa = a.slice(hi); break; }
+    }
+    if (!aoa) aoa = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:true});
     headers = (aoa[0]||[]).map(h => String(h ?? ''));
     raw = aoa.slice(1).filter(r => r.some(c => c !== null && c !== ''));
     autoMap();
-    const missing = Object.entries(FIELDS).filter(([k]) => map[k] < 0).map(([,f]) => f.label);
+    const missing = Object.entries(FIELDS).filter(([k,f]) => !f.opt && map[k] < 0).map(([,f]) => f.label);
     document.getElementById('fileName').textContent = `${file.name} · ${fmt(raw.length)} registros` + (missing.length ? ` · Faltan columnas: ${missing.join(', ')}` : '');
-    drop.classList.add('hidden'); document.getElementById('dash').classList.remove('hidden');
-    document.getElementById('exportBtn').disabled = false;
+    document.getElementById('footDate').textContent = `Generado el ${new Date().toLocaleDateString('es-PE')} · ${file.name}`;
+    drop.classList.add('hidden'); document.getElementById('dash').classList.remove('hidden'); document.getElementById('nav').classList.remove('hidden');
+    document.getElementById('exportBtn').disabled = document.getElementById('printBtn').disabled = false;
     buildMapping(); prepare();
     if (missing.length) document.querySelector('details').open = true;
   };
   r.readAsArrayBuffer(file);
+}
+
+// Algunas exportaciones traen filas de título antes del encabezado
+function findHeaderRow(aoa){
+  for (let i = 0; i < Math.min(aoa.length, 15); i++) if ((aoa[i]||[]).some(c => norm(c).includes('usuario asignado'))) return i;
+  return -1;
 }
 
 function autoMap(){
@@ -271,7 +427,7 @@ function autoMap(){
 function buildMapping(){
   const el = document.getElementById('mapping');
   el.innerHTML = Object.entries(FIELDS).map(([k,f]) =>
-    `<label>${f.label}<select data-map="${k}"><option value="-1">(ninguna)</option>${headers.map((h,i)=>`<option value="${i}" ${i===map[k]?'selected':''}>${esc(h)}</option>`).join('')}</select></label>`).join('');
+    `<label>${f.label}${f.opt?' (opcional)':''}<select data-map="${k}"><option value="-1">(ninguna)</option>${headers.map((h,i)=>`<option value="${i}" ${i===map[k]?'selected':''}>${esc(h)}</option>`).join('')}</select></label>`).join('');
   el.querySelectorAll('select').forEach(s => s.addEventListener('change', () => { map[s.dataset.map] = +s.value; prepare(); }));
 }
 
@@ -289,13 +445,17 @@ const ymd = d => d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0'
 
 function prepare(){
   const g = (r,k) => map[k] >= 0 ? r[map[k]] : null;
+  const txt = v => { const s = String(v ?? '').trim(); return s === '-' ? '' : s; };
   rows = raw.map(r => {
     const fasig = toDate(g(r,'fasig')), fpi = toDate(g(r,'fpi'));
     const horas = fasig && fpi ? (fpi - fasig) / 36e5 : null;
-    const segmento = val(g(r,'segmento'));
-    return { usuario: val(g(r,'usuario')), canal: val(g(r,'canal')), proyecto: val(g(r,'proyecto')), segmento,
-      segGrupo: NO_EFECTIVOS.includes(segKey(segmento)) ? 'No efectivos' : segmento,
-      fasig, fpi, horas: horas != null && horas >= 0 ? horas : null, reasignado: horas != null && horas < 0 };
+    const segmento = val(g(r,'segmento')), stage = stageOf(segmento);
+    let razon = val(g(r,'razon'));
+    if (razon === '(Sin dato)' && segKey(segmento).includes('desestim')) razon = '(Sin motivo registrado)';
+    return { usuario: val(g(r,'usuario')), canal: val(g(r,'canal')), proyecto: val(g(r,'proyecto')), segmento, stage,
+      segGrupo: stage === 'noef' ? 'No efectivos' : segmento,
+      fasig, fpi, horas: horas != null && horas >= 0 ? horas : null, reasignado: horas != null && horas < 0,
+      razon, nombre: [txt(g(r,'nombres')), txt(g(r,'apellidos'))].filter(Boolean).join(' '), celular: txt(g(r,'celular')) };
   });
   const dates = rows.map(r => r.fasig).filter(Boolean).sort((a,b)=>a-b);
   const dF = document.getElementById('dFrom'), dT = document.getElementById('dTo');
@@ -307,6 +467,7 @@ function prepare(){
 
 // ---------- Filtros ----------
 function countBy(list, key){ const m = new Map(); list.forEach(r => m.set(r[key], (m.get(r[key])||0)+1)); return [...m.entries()].sort((a,b)=>b[1]-a[1]); }
+function groupBy(list, key){ const m = new Map(); list.forEach(r => { if (!m.has(r[key])) m.set(r[key], []); m.get(r[key]).push(r); }); return [...m.entries()].sort((a,b)=>b[1].length-a[1].length); }
 
 function buildChips(id, key, offSet){
   const el = document.getElementById(id);
@@ -327,6 +488,12 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   state.canalOff.clear(); state.proyectoOff.clear(); state.from = state.to = state.user = '';
   document.getElementById('dFrom').value = document.getElementById('dTo').value = ''; saveHidden(); render();
 });
+function bindSeg(id, key){
+  document.querySelectorAll(`#${id} button`).forEach(b => b.addEventListener('click', () => {
+    state[key] = b.dataset.v; document.querySelectorAll(`#${id} button`).forEach(x => x.classList.toggle('on', x === b)); render();
+  }));
+}
+bindSeg('qualDim','qualDim'); bindSeg('motDim','motDim');
 
 function filtered(ignoreUser){
   return rows.filter(r => !state.canalOff.has(r.canal) && !state.proyectoOff.has(r.proyecto)
@@ -335,25 +502,61 @@ function filtered(ignoreUser){
     && (ignoreUser || !state.user || r.usuario === state.user));
 }
 
-// ---------- Render ----------
-function crosstab(list, colKey, colOrder){
-  const users = countBy(list, 'usuario').map(e => e[0]);
-  let cols = countBy(list, colKey).map(e => e[0]);
-  if (colOrder) cols.sort((a,b) => { const ia = colOrder.indexOf(segKey(a)), ib = colOrder.indexOf(segKey(b)); return (ia<0?99:ia) - (ib<0?99:ib); });
-  const m = {}; users.forEach(u => { m[u] = {}; cols.forEach(c => m[u][c] = 0); });
-  list.forEach(r => m[r.usuario][r[colKey]]++);
-  return {users, cols, m};
+function describeFilters(){
+  const p = [];
+  if (state.canalOff.size) p.push(`Canales ocultos: ${[...state.canalOff].join(', ')}`);
+  if (state.proyectoOff.size) p.push(`Proyectos ocultos: ${[...state.proyectoOff].join(', ')}`);
+  if (state.from || state.to) p.push(`Asignación: ${state.from || 'inicio'} a ${state.to || 'hoy'}`);
+  if (state.user) p.push(`Usuario: ${state.user}`);
+  return p.join(' · ');
 }
 
-function heatTable(el, ct){
+// ---------- Cálculos ----------
+function stats(list){
+  const hrs = list.map(r => r.horas).filter(h => h != null);
+  const st = v => list.filter(r => r.stage === v).length;
+  return {
+    total: list.length,
+    atendidos: list.filter(r => r.fpi).length,
+    sinInter: list.filter(r => !r.fpi).length,
+    reasig: list.filter(r => r.reasignado).length,
+    med: median(hrs),
+    en24: hrs.filter(h => h <= 24).length, nHrs: hrs.length,
+    citas: st(2) + st(3),
+    citasEf: st(3),
+    sep: st(4),
+    alcCita: list.filter(r => isNum(r.stage) && r.stage >= 2).length,
+    alcEf: list.filter(r => isNum(r.stage) && r.stage >= 3).length,
+    noEf: st('noef'),
+  };
+}
+
+function crosstab(list, rowKey, colKey, colOrder){
+  const rws = countBy(list, rowKey).map(e => e[0]);
+  let cols = countBy(list, colKey).map(e => e[0]);
+  if (colOrder) cols.sort((a,b) => segRank(a) - segRank(b));
+  const m = {}; rws.forEach(u => { m[u] = {}; cols.forEach(c => m[u][c] = 0); });
+  list.forEach(r => m[r[rowKey]][r[colKey]]++);
+  return {users: rws, cols, m};
+}
+
+// Agrupa los valores menos frecuentes en "Otros" para que los gráficos sigan legibles con datos nuevos
+function topN(list, key, n){
+  const top = new Set(countBy(list, key).slice(0, n).map(e => e[0]));
+  return v => top.has(v) ? v : 'Otros';
+}
+
+// ---------- Componentes ----------
+function heatTable(el, ct, rowLabel = 'Usuario asignado', clickable = true){
+  if (!ct.users.length) { el.innerHTML = '<div class="empty">Sin datos con los filtros actuales.</div>'; return; }
   const max = Math.max(1, ...ct.users.flatMap(u => ct.cols.map(c => ct.m[u][c])));
   const heat = getComputedStyle(document.documentElement).getPropertyValue('--heat').trim();
   const colTot = ct.cols.map(c => ct.users.reduce((s,u)=>s+ct.m[u][c],0));
   const grand = colTot.reduce((a,b)=>a+b,0);
-  let h = `<table><thead><tr><th>Usuario asignado</th>${ct.cols.map(c=>`<th>${esc(c)}</th>`).join('')}<th>Total</th></tr></thead><tbody>`;
+  let h = `<table><thead><tr><th>${rowLabel}</th>${ct.cols.map(c=>`<th>${esc(c)}</th>`).join('')}<th>Total</th></tr></thead><tbody>`;
   ct.users.forEach(u => {
     const tot = ct.cols.reduce((s,c)=>s+ct.m[u][c],0);
-    h += `<tr data-user="${esc(u)}" class="${state.user===u?'sel':''}"><td><b>${esc(u)}</b></td>` + ct.cols.map(c => {
+    h += `<tr ${clickable ? `data-user="${esc(u)}"` : ''} class="${clickable?'click':''} ${clickable && state.user===u?'sel':''}"><td><b>${esc(u)}</b></td>` + ct.cols.map(c => {
       const v = ct.m[u][c], a = v ? (0.06 + 0.5*v/max).toFixed(2) : 0;
       return `<td style="background:rgba(${heat},${a})" title="${pct(v,tot)} de ${esc(u)}">${v?fmt(v):'·'}</td>`;
     }).join('') + `<td><b>${fmt(tot)}</b></td></tr>`;
@@ -369,53 +572,33 @@ function bindRowClicks(el){
   }));
 }
 
-function stackedChart(id, ct, colorFor){
+function makeChart(id, config, height){
   if (charts[id]) charts[id].destroy();
   const canvas = document.getElementById(id);
-  canvas.parentElement.style.height = Math.max(240, ct.users.length * 34 + 110) + 'px';
-  charts[id] = new Chart(canvas, {
+  if (height) canvas.parentElement.style.height = height + 'px';
+  charts[id] = new Chart(canvas, config);
+}
+const axisX = extra => Object.assign({stacked:true, ticks:{color:'#808285'}, grid:{color:'#EDEDEE'}, border:{display:false}}, extra);
+const axisY = extra => Object.assign({stacked:true, ticks:{color:'#1A1A1A', font:{weight:700}}, grid:{display:false}}, extra);
+const legend = {position:'bottom', labels:{color:'#55565A', boxWidth:12, boxHeight:12, padding:10}};
+const tooltipBase = {backgroundColor:'#000', titleFont:{weight:800}};
+const userClick = labels => (e, els) => { if (els.length) { const u = labels[els[0].index]; state.user = state.user===u?'':u; render(); } };
+
+function stackedChart(id, ct, colorFor){
+  makeChart(id, {
     type:'bar',
     data:{ labels: ct.users, datasets: ct.cols.map((c,i) => ({ label:c, data: ct.users.map(u => ct.m[u][c]), backgroundColor: colorFor(c,i), borderColor:'#fff', borderWidth:{right:1}, maxBarThickness:26 })) },
     options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:false,
-      scales:{ x:{stacked:true, ticks:{color:'#808285'}, grid:{color:'#EDEDEE'}, border:{display:false}},
-               y:{stacked:true, ticks:{color:'#1A1A1A', font:{weight:700}}, grid:{display:false}} },
-      plugins:{ legend:{position:'bottom', labels:{color:'#55565A', boxWidth:12, boxHeight:12, padding:10}},
-        tooltip:{ backgroundColor:'#000', titleFont:{weight:800}, callbacks:{ footer: items => { const u = items[0].label; const t = ct.cols.reduce((s,c)=>s+ct.m[u][c],0); return `Total ${u}: ${fmt(t)}`; } } } },
-      onClick:(e, els) => { if (els.length) { const u = ct.users[els[0].index]; state.user = state.user===u?'':u; render(); } }
-    }
-  });
+      scales:{ x:axisX(), y:axisY() },
+      plugins:{ legend, tooltip:{ ...tooltipBase, callbacks:{ footer: items => { const u = items[0].label; const t = ct.cols.reduce((s,c)=>s+ct.m[u][c],0); return `Total ${u}: ${fmt(t)}`; } } } },
+      onClick: userClick(ct.users) }
+  }, Math.max(240, ct.users.length * 34 + 110));
 }
 
-function stats(list){
-  const s = k => list.filter(r => segKey(r.segmento) === k).length;
-  const hrs = list.map(r => r.horas).filter(h => h != null);
-  return {
-    total: list.length,
-    sinInter: list.filter(r => !r.fpi).length,
-    reasig: list.filter(r => r.reasignado).length,
-    med: median(hrs),
-    en24: hrs.filter(h => h <= 24).length, nHrs: hrs.length,
-    citas: s('cita agendada') + s('cita realizada'),
-    citasEf: s('cita realizada'),
-    sep: s('separacion'),
-    noEf: s('desestimados') + s('no contesta/seguimiento'),
-  };
-}
-
-function render(){
-  Chart.defaults.font.family = '"Mulish", system-ui, sans-serif';
-  buildChips('chipsCanal','canal',state.canalOff);
-  buildChips('chipsProyecto','proyecto',state.proyectoOff);
-
-  const all = filtered(true);
-  const sel = document.getElementById('userSel');
-  const users = countBy(all,'usuario').map(e=>e[0]);
-  if (state.user && !users.includes(state.user)) state.user = '';
-  sel.innerHTML = `<option value="">Todos los usuarios</option>` + users.map(u=>`<option ${u===state.user?'selected':''}>${esc(u)}</option>`).join('');
-
-  const list = filtered(false);
+// ---------- Secciones ----------
+function renderKpis(list){
   const k = stats(list);
-  document.getElementById('kpis').innerHTML = [
+  document.getElementById('s-resumen').innerHTML = [
     ['Leads', fmt(k.total)],
     ['Usuarios asignados', fmt(new Set(list.map(r=>r.usuario)).size)],
     ['Sin 1ª interacción', `${fmt(k.sinInter)} <small>${pct(k.sinInter,k.total)}</small>`],
@@ -423,22 +606,23 @@ function render(){
     ['Atendidos ≤ 24 h', pct(k.en24,k.nHrs)],
     ['Citas', `${fmt(k.citas)} <small>${pct(k.citas,k.total)}</small>`],
     ['Citas efectivas', `${fmt(k.citasEf)} <small>${pct(k.citasEf,k.citas)} de citas</small>`],
+    ['Separaciones', `${fmt(k.sep)} <small>${pct(k.sep,k.total)}</small>`],
     ['No efectivos', `${fmt(k.noEf)} <small>${pct(k.noEf,k.total)}</small>`],
   ].map(([l,v]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+}
 
-  // Relación de usuarios (todos los usuarios; la selección solo resalta)
+function renderRelacion(all, users){
   const rel = users.map(u => {
     const ur = all.filter(r => r.usuario === u);
-    const st = stats(ur);
     const last = ur.map(r=>r.fasig).filter(Boolean).sort((a,b)=>b-a)[0];
-    return {u, ...st, last};
+    return {u, ...stats(ur), last};
   });
   const totAll = all.length, maxT = Math.max(1, ...rel.map(r=>r.total));
-  let h = `<table><thead><tr><th>Usuario asignado</th><th style="text-align:left">Leads</th><th>% del total</th><th>Sin 1ª interacción</th><th>Mediana 1ª atención</th><th>Atendidos ≤ 24 h</th><th>Citas</th><th>Citas efectivas</th><th>Separación</th><th title="Desestimados + No contesta/seguimiento">No efectivos</th><th>Última asignación</th></tr></thead><tbody>`;
+  let h = `<table><thead><tr><th>Usuario asignado</th><th class="l">Leads</th><th>% del total</th><th>Sin 1ª interacción</th><th>Mediana 1ª atención</th><th>Atendidos ≤ 24 h</th><th>Citas</th><th>Citas efectivas</th><th>Separación</th><th title="Desestimados + No contesta/seguimiento">No efectivos</th><th>Última asignación</th></tr></thead><tbody>`;
   rel.forEach(r => {
     const p24 = r.nHrs ? r.en24/r.nHrs : null;
-    h += `<tr data-user="${esc(r.u)}" class="${state.user===r.u?'sel':''}"><td><b>${esc(r.u)}</b></td>
-      <td style="text-align:left"><span class="bar" style="width:${Math.round(120*r.total/maxT)}px"></span>${fmt(r.total)}</td>
+    h += `<tr data-user="${esc(r.u)}" class="click ${state.user===r.u?'sel':''}"><td><b>${esc(r.u)}</b></td>
+      <td class="l"><span class="bar" style="width:${Math.round(120*r.total/maxT)}px"></span>${fmt(r.total)}</td>
       <td>${pct(r.total,totAll)}</td>
       <td class="${r.sinInter ? 'warn' : ''}">${fmt(r.sinInter)}</td>
       <td>${dur(r.med)}</td>
@@ -447,33 +631,245 @@ function render(){
       <td>${r.last ? r.last.toLocaleDateString('es-PE') : '–'}</td></tr>`;
   });
   const kt = stats(all);
-  h += `</tbody><tfoot><tr class="total"><td>Total</td><td style="text-align:left">${fmt(totAll)}</td><td>100%</td><td>${fmt(kt.sinInter)}</td><td>${dur(kt.med)}</td><td>${pct(kt.en24,kt.nHrs)}</td><td>${fmt(kt.citas)}</td><td>${fmt(kt.citasEf)} <span class="note">${pct(kt.citasEf,kt.citas)}</span></td><td>${fmt(kt.sep)}</td><td>${fmt(kt.noEf)} <span class="note">${pct(kt.noEf,totAll)}</span></td><td></td></tr></tfoot></table>`;
-  const relEl = document.getElementById('tblRel'); relEl.innerHTML = h; bindRowClicks(relEl);
-
-  const ctCanal = crosstab(list,'canal');
-  const ctSeg = crosstab(list,'segGrupo',SEG_ORDER);
-  const canalColors = {}; countBy(rows,'canal').forEach(([c],i) => canalColors[c] = PALETTE[i % PALETTE.length]);
-  stackedChart('chCanal', ctCanal, c => canalColors[c]);
-  stackedChart('chSegmento', ctSeg, (c,i) => SEG_COLORS[segKey(c)] || PALETTE[i % PALETTE.length]);
-  heatTable(document.getElementById('tblCanal'), ctCanal);
-  heatTable(document.getElementById('tblSegmento'), ctSeg);
-  lastSummary = {rel, ctCanal, ctSeg};
+  h += `</tbody><tfoot><tr class="total"><td>Total</td><td class="l">${fmt(totAll)}</td><td>100%</td><td>${fmt(kt.sinInter)}</td><td>${dur(kt.med)}</td><td>${pct(kt.en24,kt.nHrs)}</td><td>${fmt(kt.citas)}</td><td>${fmt(kt.citasEf)} <span class="note">${pct(kt.citasEf,kt.citas)}</span></td><td>${fmt(kt.sep)}</td><td>${fmt(kt.noEf)} <span class="note">${pct(kt.noEf,totAll)}</span></td><td></td></tr></tfoot></table>`;
+  const el = document.getElementById('tblRel');
+  el.innerHTML = users.length ? h : '<div class="empty">Sin datos con los filtros actuales.</div>'; bindRowClicks(el);
+  return rel;
 }
 
-// ---------- Exportar ----------
+const funnelOf = s => [s.total, s.atendidos, s.alcCita, s.alcEf, s.sep];
+
+function renderEmbudo(list, all, users){
+  const f = funnelOf(stats(list));
+  const reds = ['#2E2F31','#808285','#F5758F','#ED1944','#8E0E29'];
+  document.getElementById('funnel').innerHTML = FUNNEL_STEPS.map((l,i) => `
+    <div class="frow2"><div class="fl">${l}</div>
+      <div class="ftrack"><div class="fbar" style="width:${f[0] ? (100*f[i]/f[0]).toFixed(1) : 0}%;background:${reds[i]}"></div></div>
+      <div class="fv">${fmt(f[i])} <small>${pct(f[i],f[0])}</small></div>
+      <div class="fc">${i ? `<b>${pct(f[i],f[i-1])}</b> del paso anterior` : ''}</div></div>`).join('');
+
+  const team = funnelOf(stats(all));
+  const rate = (a,b) => b ? a/b : null;
+  const teamR = [rate(team[1],team[0]), rate(team[2],team[0]), rate(team[3],team[2]), rate(team[4],team[0])];
+  const cls = (v,t) => v == null || t == null || !t ? '' : v >= t ? 'good' : v < t/2 ? 'warn' : '';
+  let h = `<table><thead><tr><th>Usuario asignado</th><th>Leads</th><th>% atendidos</th><th>% llegó a cita</th><th>% cita realizada (de las citas)</th><th>Separaciones</th><th>% cierre (separación / leads)</th></tr></thead><tbody>`;
+  const row = (name, F, isTotal) => {
+    const R = [rate(F[1],F[0]), rate(F[2],F[0]), rate(F[3],F[2]), rate(F[4],F[0])];
+    const c = i => isTotal ? '' : cls(R[i], teamR[i]);
+    return `<td>${fmt(F[0])}</td><td class="${c(0)}">${pct(F[1],F[0])}</td><td class="${c(1)}">${pct(F[2],F[0])}</td><td class="${c(2)}">${pct(F[3],F[2])}</td><td>${fmt(F[4])}</td><td class="${c(3)}">${pct(F[4],F[0])}</td>`;
+  };
+  users.forEach(u => {
+    const F = funnelOf(stats(all.filter(r => r.usuario === u)));
+    h += `<tr data-user="${esc(u)}" class="click ${state.user===u?'sel':''}"><td><b>${esc(u)}</b></td>${row(u,F)}</tr>`;
+  });
+  h += `</tbody><tfoot><tr class="total"><td>Equipo</td>${row('', team, true)}</tr></tfoot></table>`;
+  const el = document.getElementById('tblFunnel');
+  el.innerHTML = users.length ? h : '<div class="empty">Sin datos con los filtros actuales.</div>'; bindRowClicks(el);
+  return {total:f, team};
+}
+
+function renderCalidad(list){
+  const dim = state.qualDim;
+  document.getElementById('qualTitle').textContent = dim === 'canal' ? 'canal origen' : 'proyecto origen';
+  const groups = groupBy(list, dim).map(([k, gl]) => ({k, ...stats(gl)}));
+  const maxRate = Math.max(0.0001, ...groups.map(g => g.total ? g.citas/g.total : 0));
+  const tot = stats(list);
+  let h = `<table><thead><tr><th>${dim === 'canal' ? 'Canal origen' : 'Proyecto origen'}</th><th>Leads</th><th>% del total</th><th>% atendidos</th><th>Mediana 1ª atención</th><th>Citas</th><th class="l">% a cita</th><th>Citas efectivas</th><th>Separaciones</th><th>No efectivos</th></tr></thead><tbody>`;
+  groups.forEach(g => {
+    const r = g.total ? g.citas/g.total : 0;
+    h += `<tr><td><b>${esc(g.k)}</b></td><td>${fmt(g.total)}</td><td>${pct(g.total,tot.total)}</td><td>${pct(g.atendidos,g.total)}</td><td>${dur(g.med)}</td>
+      <td>${fmt(g.citas)}</td><td class="l"><span class="bar" style="width:${Math.round(80*r/maxRate)}px"></span>${pct(g.citas,g.total)}</td>
+      <td>${fmt(g.citasEf)}</td><td>${fmt(g.sep)}</td>
+      <td class="${g.total && g.noEf/g.total >= .85 ? 'warn' : ''}">${fmt(g.noEf)} <span class="note">${pct(g.noEf,g.total)}</span></td></tr>`;
+  });
+  h += `</tbody><tfoot><tr class="total"><td>Total</td><td>${fmt(tot.total)}</td><td>100%</td><td>${pct(tot.atendidos,tot.total)}</td><td>${dur(tot.med)}</td><td>${fmt(tot.citas)}</td><td class="l">${pct(tot.citas,tot.total)}</td><td>${fmt(tot.citasEf)}</td><td>${fmt(tot.sep)}</td><td>${fmt(tot.noEf)} <span class="note">${pct(tot.noEf,tot.total)}</span></td></tr></tfoot></table>`;
+  document.getElementById('tblQual').innerHTML = groups.length ? h : '<div class="empty">Sin datos con los filtros actuales.</div>';
+  return {canal: groupBy(list,'canal').map(([k,gl]) => ({k, ...stats(gl)})), proyecto: groupBy(list,'proyecto').map(([k,gl]) => ({k, ...stats(gl)}))};
+}
+
+function renderTiempos(list){
+  const users = countBy(list,'usuario').map(e=>e[0]);
+  const labels = [...TRAMOS.map(t=>t.l), 'Sin 1ª interacción'];
+  const counts = users.map(u => {
+    const ur = list.filter(r => r.usuario === u && !r.reasignado);
+    const c = labels.map(() => 0);
+    ur.forEach(r => { if (!r.fpi) c[labels.length-1]++; else if (r.horas != null) c[TRAMOS.findIndex(t => r.horas < t.max)]++; });
+    return c;
+  });
+  makeChart('chTiempos', {
+    type:'bar',
+    data:{ labels: users, datasets: labels.map((l,i) => ({ label:l, counts: counts.map(c=>c[i]),
+      data: counts.map(c => { const t = c.reduce((a,b)=>a+b,0); return t ? +(100*c[i]/t).toFixed(1) : 0; }),
+      backgroundColor: i < TRAMOS.length ? TRAMOS[i].c : '#2E2F31', borderColor:'#fff', borderWidth:{right:1}, maxBarThickness:26 })) },
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:false,
+      scales:{ x:axisX({max:100, ticks:{color:'#808285', callback:v=>v+'%'}}), y:axisY() },
+      plugins:{ legend, tooltip:{ ...tooltipBase, callbacks:{ label: c => `${c.dataset.label}: ${c.raw}% (${fmt(c.dataset.counts[c.dataIndex])} leads)` } } },
+      onClick: userClick(users) }
+  }, Math.max(220, users.length * 34 + 100));
+  return {users, labels, counts};
+}
+
+function renderMotivos(list){
+  const body = document.getElementById('motivosBody');
+  const ml = has('razon') ? list.filter(r => r.razon !== '(Sin dato)') : [];
+  if (!ml.length) {
+    if (charts.chMotivos) { charts.chMotivos.destroy(); delete charts.chMotivos; }
+    body.querySelector('.grid2').classList.add('hidden');
+    const empty = document.getElementById('motEmpty');
+    empty.classList.remove('hidden');
+    empty.textContent = has('razon') ? 'No hay leads con razón de desistimiento con los filtros actuales.' : 'El Excel no trae la columna "Razón de desistimiento". Puedes elegirla en "Columnas del Excel usadas".';
+    return null;
+  }
+  body.querySelector('.grid2').classList.remove('hidden'); document.getElementById('motEmpty').classList.add('hidden');
+  const top = countBy(ml,'razon').slice(0,12);
+  makeChart('chMotivos', {
+    type:'bar',
+    data:{ labels: top.map(e=>e[0]), datasets:[{ label:'Leads', data: top.map(e=>e[1]),
+      backgroundColor: top.map(e => e[0].startsWith('(') ? '#B9BABC' : '#ED1944'), maxBarThickness:22, borderRadius:4 }] },
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:false,
+      scales:{ x:axisX({stacked:false}), y:axisY({stacked:false}) },
+      plugins:{ legend:{display:false}, tooltip:{ ...tooltipBase, callbacks:{ label: c => `${fmt(c.raw)} leads (${pct(c.raw, ml.length)})` } } } }
+  }, Math.max(220, top.length * 30 + 60));
+  const dim = state.motDim;
+  const fm = topN(ml,'razon',10), fd = topN(ml,dim,8);
+  const tmp = ml.map(r => ({_m: fm(r.razon), _d: fd(r[dim])}));
+  const ct = crosstab(tmp,'_m','_d');
+  heatTable(document.getElementById('tblMotivos'), ct, 'Motivo', false);
+  return {top, ct};
+}
+
+function renderEvolucion(list){
+  const ds = list.filter(r => r.fasig);
+  if (!ds.length) { if (charts.chEvo) { charts.chEvo.destroy(); delete charts.chEvo; } document.getElementById('evoSub').textContent = 'No hay fechas de asignación con los filtros actuales.'; return null; }
+  const min = new Date(Math.min(...ds.map(r=>r.fasig))), max = new Date(Math.max(...ds.map(r=>r.fasig)));
+  const days = (max - min) / 864e5;
+  const gran = days <= 45 ? 'día' : days <= 400 ? 'semana' : 'mes';
+  const start = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    if (gran === 'semana') x.setDate(x.getDate() - ((x.getDay()+6)%7)); if (gran === 'mes') x.setDate(1); return x; };
+  const next = d => { const x = new Date(d); if (gran === 'día') x.setDate(x.getDate()+1); else if (gran === 'semana') x.setDate(x.getDate()+7); else x.setMonth(x.getMonth()+1); return x; };
+  const lab = d => gran === 'mes' ? d.toLocaleDateString('es-PE',{month:'short', year:'numeric'}) : (gran === 'semana' ? 'Sem ' : '') + d.toLocaleDateString('es-PE',{day:'2-digit', month:'2-digit'});
+  const buckets = []; for (let d = start(min); d <= max; d = next(d)) buckets.push(ymd(d));
+  const labels = buckets.map(b => lab(new Date(b+'T00:00')));
+  const fc = topN(ds,'canal',6);
+  const canales = [...new Set(countBy(ds,'canal').map(e => fc(e[0])))];
+  const idx = r => buckets.indexOf(ymd(start(r.fasig)));
+  const series = Object.fromEntries(canales.map(c => [c, buckets.map(() => 0)]));
+  const citas = buckets.map(() => 0);
+  ds.forEach(r => { const i = idx(r); series[fc(r.canal)][i]++; if (isNum(r.stage) && r.stage >= 2) citas[i]++; });
+  const colors = {}; countBy(rows,'canal').forEach(([c],i) => colors[c] = PALETTE[i % PALETTE.length]); colors['Otros'] = '#D9DADB';
+  document.getElementById('evoSub').textContent = `Por ${gran} de asignación y canal origen. La línea muestra cuántos de esos leads llegaron a cita.`;
+  makeChart('chEvo', {
+    type:'bar',
+    data:{ labels, datasets:[
+      { type:'line', label:'Llegaron a cita', data:citas, borderColor:'#1A1A1A', backgroundColor:'#fff', borderWidth:2, borderDash:[6,4], pointRadius:3, pointBackgroundColor:'#1A1A1A', cubicInterpolationMode:'monotone', yAxisID:'y1', order:0 },
+      ...canales.map(c => ({ label:c, data:series[c], backgroundColor:colors[c], order:1, maxBarThickness:40 })) ] },
+    options:{ responsive:true, maintainAspectRatio:false, animation:false,
+      scales:{ x:{stacked:true, ticks:{color:'#808285', maxRotation:0, autoSkip:true}, grid:{display:false}},
+               y:{stacked:true, ticks:{color:'#808285'}, grid:{color:'#EDEDEE'}, border:{display:false}, title:{display:true, text:'Leads', color:'#808285'}},
+               y1:{position:'right', beginAtZero:true, ticks:{color:'#000', precision:0}, grid:{display:false}, title:{display:true, text:'Citas', color:'#000'}} },
+      plugins:{ legend, tooltip:{ ...tooltipBase, mode:'index', intersect:false } } }
+  });
+  return {labels, canales, series, citas, gran};
+}
+
+function pendientes(list){
+  const now = Date.now();
+  return list.map(r => {
+    const age = r.fasig ? (now - r.fasig) / 36e5 : null;
+    let tipo = null;
+    if (!r.fpi && r.stage !== 'noef') tipo = 'Sin 1ª interacción';
+    else if (r.stage === 0 && age != null && age > 72) tipo = 'Sin avance > 3 días';
+    return tipo ? {...r, tipo, age} : null;
+  }).filter(Boolean).sort((a,b) => (a.tipo === b.tipo ? 0 : a.tipo.startsWith('Sin 1') ? -1 : 1) || (b.age ?? 0) - (a.age ?? 0));
+}
+
+function renderPendientes(list){
+  const p = pendientes(list);
+  const el = document.getElementById('tblPend');
+  if (!p.length) { el.innerHTML = '<div class="empty">No hay leads pendientes con los filtros actuales. ¡Buen trabajo!</div>'; return p; }
+  const showName = has('nombres') || has('apellidos'), showCel = has('celular');
+  const wa = c => { const d = c.replace(/\D/g,''); return d.length >= 9 ? `<a class="wa" href="https://wa.me/${d.length === 9 ? '51'+d : d}" target="_blank" rel="noopener">${esc(c)}</a>` : esc(c); };
+  let h = `<table><thead><tr><th>Tipo</th><th class="l">Usuario</th>${showName?'<th class="l">Cliente</th>':''}${showCel?'<th class="l">Celular</th>':''}<th class="l">Proyecto</th><th class="l">Canal</th><th class="l">Segmento</th><th>Asignado</th><th>Antigüedad</th></tr></thead><tbody>`;
+  p.slice(0, PEND_LIMIT).forEach(r => {
+    h += `<tr><td><span class="tag ${r.tipo.startsWith('Sin 1') ? '' : 'g'}">${r.tipo}</span></td><td class="l"><b>${esc(r.usuario)}</b></td>
+      ${showName?`<td class="l">${esc(r.nombre || '–')}</td>`:''}${showCel?`<td class="l">${r.celular ? wa(r.celular) : '–'}</td>`:''}
+      <td class="l">${esc(r.proyecto)}</td><td class="l">${esc(r.canal)}</td><td class="l">${esc(r.segmento)}</td>
+      <td>${r.fasig ? r.fasig.toLocaleDateString('es-PE') : '–'}</td><td class="${r.age > 72 ? 'warn' : ''}">${dur(r.age)}</td></tr>`;
+  });
+  h += `</tbody></table>`;
+  if (p.length > PEND_LIMIT) h += `<p class="note">Se muestran los ${PEND_LIMIT} más antiguos de ${fmt(p.length)}. Usa "Exportar pendientes" para la lista completa.</p>`;
+  el.innerHTML = `<p class="note" style="margin-top:0"><b>${fmt(p.length)}</b> leads pendientes: ${fmt(p.filter(r=>r.tipo.startsWith('Sin 1')).length)} sin 1ª interacción y ${fmt(p.filter(r=>!r.tipo.startsWith('Sin 1')).length)} sin avance.</p>` + h;
+  return p;
+}
+
+function render(){
+  Chart.defaults.font.family = '"Mulish", system-ui, sans-serif';
+  buildChips('chipsCanal','canal',state.canalOff);
+  buildChips('chipsProyecto','proyecto',state.proyectoOff);
+  document.getElementById('activeFilters').textContent = describeFilters();
+
+  const all = filtered(true);
+  const sel = document.getElementById('userSel');
+  const users = countBy(all,'usuario').map(e=>e[0]);
+  if (state.user && !users.includes(state.user)) state.user = '';
+  sel.innerHTML = `<option value="">Todos los usuarios</option>` + users.map(u=>`<option ${u===state.user?'selected':''}>${esc(u)}</option>`).join('');
+
+  const list = filtered(false);
+  renderKpis(list);
+  const rel = renderRelacion(all, users);
+  const embudo = renderEmbudo(list, all, users);
+  const calidad = renderCalidad(list);
+
+  const ctCanal = crosstab(list,'usuario','canal');
+  const ctSeg = crosstab(list,'usuario','segGrupo',SEG_ORDER);
+  const canalColors = {}; countBy(rows,'canal').forEach(([c],i) => canalColors[c] = PALETTE[i % PALETTE.length]);
+  stackedChart('chCanal', ctCanal, c => canalColors[c]);
+  stackedChart('chSegmento', ctSeg, segColor);
+
+  const tiempos = renderTiempos(list);
+  const motivos = renderMotivos(list);
+  renderEvolucion(list);
+  const pend = renderPendientes(list);
+  heatTable(document.getElementById('tblCanal'), ctCanal);
+  heatTable(document.getElementById('tblSegmento'), ctSeg);
+  lastSummary = {rel, embudo, calidad, ctCanal, ctSeg, tiempos, motivos, pend};
+}
+
+// ---------- Exportar / imprimir ----------
+const ctSheet = (ct, label) => XLSX.utils.aoa_to_sheet([[label, ...ct.cols, 'Total'], ...ct.users.map(u => [u, ...ct.cols.map(c=>ct.m[u][c]), ct.cols.reduce((s,c)=>s+ct.m[u][c],0)])]);
+const qualRows = (g, label) => g.map(r => ({[label]:r.k, 'Leads':r.total, 'Atendidos':r.atendidos, 'Mediana 1ª atención (h)': r.med == null ? '' : +r.med.toFixed(2),
+  'Citas':r.citas, '% a cita': r.total ? +(r.citas/r.total).toFixed(4) : '', 'Citas efectivas':r.citasEf, 'Separaciones':r.sep, 'No efectivos':r.noEf}));
+const pendRows = p => p.map(r => ({'Tipo':r.tipo, 'Usuario Asignado':r.usuario, 'Cliente':r.nombre, 'Celular':r.celular, 'Proyecto':r.proyecto, 'Canal':r.canal, 'Segmento':r.segmento, 'F. Asignación':r.fasig||'', 'Antigüedad (h)': r.age == null ? '' : +r.age.toFixed(1)}));
+
 document.getElementById('exportBtn').addEventListener('click', () => {
   if (!lastSummary) return;
-  const {rel, ctCanal, ctSeg} = lastSummary;
+  const {rel, embudo, calidad, ctCanal, ctSeg, tiempos, motivos, pend} = lastSummary;
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rel.map(r => ({
     'Usuario Asignado':r.u, 'Leads':r.total, 'Sin 1ª interacción':r.sinInter, 'Mediana 1ª atención (h)': r.med == null ? '' : +r.med.toFixed(2),
-    'Atendidos ≤ 24 h':r.en24, 'Citas':r.citas, 'Citas efectivas':r.citasEf, 'Separación':r.sep, 'No efectivos':r.noEf, 'Última asignación':r.last||''}))), 'Relación usuarios');
-  const ctSheet = ct => XLSX.utils.aoa_to_sheet([['Usuario Asignado', ...ct.cols, 'Total'], ...ct.users.map(u => [u, ...ct.cols.map(c=>ct.m[u][c]), ct.cols.reduce((s,c)=>s+ct.m[u][c],0)])]);
-  XLSX.utils.book_append_sheet(wb, ctSheet(ctCanal), 'Canal por usuario');
-  XLSX.utils.book_append_sheet(wb, ctSheet(ctSeg), 'Segmento por usuario');
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Canales ocultos', [...state.canalOff].join(', ')||'ninguno'], ['Proyectos ocultos', [...state.proyectoOff].join(', ')||'ninguno'], ['Asignación desde', state.from||'—'], ['Asignación hasta', state.to||'—'], ['Usuario', state.user||'Todos']]), 'Filtros');
-  XLSX.writeFile(wb, `GOHOUSE_resumen_leads_${ymd(new Date())}.xlsx`);
+    'Atendidos ≤ 24 h':r.en24, 'Citas':r.citas, 'Citas efectivas':r.citasEf, 'Separación':r.sep, 'No efectivos':r.noEf, 'Última asignación':r.last||''}))), 'Carga y atención');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Etapa','Leads','% del total'], ...FUNNEL_STEPS.map((l,i) => [l, embudo.total[i], embudo.total[0] ? +(embudo.total[i]/embudo.total[0]).toFixed(4) : ''])]), 'Embudo');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(qualRows(calidad.canal,'Canal Origen')), 'Calidad por canal');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(qualRows(calidad.proyecto,'Proyecto Origen')), 'Calidad por proyecto');
+  XLSX.utils.book_append_sheet(wb, ctSheet(ctCanal,'Usuario Asignado'), 'Canal por usuario');
+  XLSX.utils.book_append_sheet(wb, ctSheet(ctSeg,'Usuario Asignado'), 'Segmento por usuario');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Usuario Asignado', ...tiempos.labels], ...tiempos.users.map((u,i) => [u, ...tiempos.counts[i]])]), 'Tiempos 1ª atención');
+  if (motivos) XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Motivo','Leads'], ...motivos.top]), 'Motivos de pérdida');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pendRows(pend)), 'Pendientes');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Filtros aplicados', describeFilters() || 'Ninguno'], ['Generado', new Date()]]), 'Filtros');
+  XLSX.writeFile(wb, `GOHOUSE_reporte_leads_${ymd(new Date())}.xlsx`);
 });
+
+document.getElementById('exportPend').addEventListener('click', () => {
+  if (!lastSummary) return;
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pendRows(lastSummary.pend)), 'Pendientes');
+  XLSX.writeFile(wb, `GOHOUSE_pendientes_${ymd(new Date())}.xlsx`);
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+window.addEventListener('beforeprint', () => Object.values(charts).forEach(c => c.resize()));
+window.addEventListener('afterprint', () => Object.values(charts).forEach(c => c.resize()));
 
 loadHidden();
 </script>
