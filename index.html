@@ -67,6 +67,10 @@ header .btn.primary:hover{background:var(--rojo-suave);color:var(--rojo)}
 .chip{border:1px solid var(--line);background:#F7F7F8;color:var(--gris-claro);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px;font-weight:600;text-decoration:line-through;user-select:none}
 .chip.on{background:var(--rojo-suave);border-color:var(--rojo);color:var(--ink);text-decoration:none}
 .chip small{opacity:.65;margin-left:5px}
+.ck{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:4px 10px 4px 7px;cursor:pointer;font-size:13px;font-weight:700;user-select:none;background:#F7F7F8;color:var(--gris)}
+.ck input{accent-color:var(--rojo);width:15px;height:15px;margin:0;cursor:pointer}
+.ck.on{background:var(--panel);border-color:var(--rojo);color:var(--ink)}
+.ck small{opacity:.65;font-weight:600}
 input[type=date],select{font:inherit;padding:5px 9px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
 input[type=date]:focus,select:focus{outline:2px solid var(--rojo);outline-offset:1px}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
@@ -184,21 +188,16 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700
   <div id="dash" class="hidden">
     <section class="panel" id="s-filtros">
       <div class="panel-head">
-        <div><div class="eyebrow"><span>00</span>Filtros</div><p class="sub">Haz clic en un canal o proyecto para ocultarlo/mostrarlo. Lo que ocultes se recuerda para la próxima vez.</p></div>
+        <div><div class="eyebrow"><span>00</span>Filtros</div><p class="sub">Haz clic en un valor para ocultarlo/mostrarlo. Los filtros se combinan entre sí y lo que ocultes se recuerda para la próxima vez.</p></div>
         <button class="btn small" id="resetBtn">Limpiar filtros</button>
       </div>
       <div class="filters" id="filtersPanel">
-        <div class="frow"><span class="flabel">Canal origen</span>
-          <button class="btn small" data-all="canal">Todos</button><button class="btn small" data-none="canal">Ninguno</button>
-          <span id="chipsCanal" class="frow"></span></div>
-        <div class="frow"><span class="flabel">Proyecto origen</span>
-          <button class="btn small" data-all="proyecto">Todos</button><button class="btn small" data-none="proyecto">Ninguno</button>
-          <span id="chipsProyecto" class="frow"></span></div>
+        <div id="chipFilters" class="filters"></div>
         <div class="frow"><span class="flabel">Fecha de asignación</span>
           <input type="date" id="dFrom"> a <input type="date" id="dTo"></div>
-        <div class="frow"><span class="flabel">Usuario asignado</span>
+        <div class="frow"><span class="flabel">Ver solo un usuario</span>
           <select id="userSel"><option value="">Todos los usuarios</option></select>
-          <span class="note">También puedes hacer clic en una fila de las tablas o en una barra.</span></div>
+          <span class="note">También puedes hacer clic en una fila de las tablas o en una barra. Para elegir qué asesores entran al reporte usa las casillas de "Usuario asignado".</span></div>
         <div class="note" id="activeFilters"></div>
         <details>
           <summary>Columnas del Excel usadas</summary>
@@ -213,7 +212,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700
     <section class="panel" id="s-usuarios">
       <div class="eyebrow"><span>01</span>Relación de usuarios asignados</div>
       <h2>Carga y atención por usuario</h2>
-      <p class="sub">Tiempo de 1ª atención = F. Primera Interacción Manual − F. Asignación. Los leads reasignados (interacción anterior a la asignación actual) no entran en ese cálculo. No efectivos = Desestimados + No contesta/seguimiento.</p>
+      <p class="sub">Tiempo de 1ª atención = F. Primera Interacción Manual − F. Asignación. Los leads reasignados (interacción anterior a la asignación actual) no entran en ese cálculo. Total de citas = Cita realizada + Citas no efectivas (segmento Cita agendada) + Separación. No efectivos = Desestimados + No contesta/seguimiento.</p>
       <div class="tablewrap" id="tblRel"></div>
     </section>
 
@@ -231,7 +230,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700
       <div class="panel-head">
         <div><div class="eyebrow"><span>03</span>Calidad de leads</div>
           <h2>Rendimiento por <span id="qualTitle">canal origen</span></h2>
-          <p class="sub">Qué canal o proyecto trae leads que avanzan. "% a cita" = citas / leads.</p></div>
+          <p class="sub">Qué canal o proyecto trae leads que avanzan. Total de citas = realizadas + no efectivas + separación; "% a cita" = citas / leads.</p></div>
         <div class="seg noprint" id="qualDim"><button data-v="canal" class="on">Canal</button><button data-v="proyecto">Proyecto</button></div>
       </div>
       <div class="tablewrap" id="tblQual"></div>
@@ -245,7 +244,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:13px;font-weight:700
       </section>
       <section class="panel">
         <div class="eyebrow"><span>05</span>Segmento actual</div>
-        <h2>Segmento actual por usuario asignado</h2><p class="sub">En orden de avance. No efectivos = Desestimados + No contesta/seguimiento.</p>
+        <h2>Segmento actual por usuario asignado</h2><p class="sub">En orden de avance. Citas no efectivas = Cita agendada. No efectivos = Desestimados + No contesta/seguimiento.</p>
         <div class="chartbox"><canvas id="chSegmento"></canvas></div>
       </section>
     </div>
@@ -312,6 +311,9 @@ const FIELDS = {
   usuario:  {label:'Usuario Asignado',              keys:['usuario asignado']},
   canal:    {label:'Canal Origen',                  keys:['canal origen']},
   proyecto: {label:'Proyecto Origen',               keys:['proyecto origen']},
+  medioOrigen:{label:'Medio Origen',                keys:['medio origen'], opt:true},
+  canalActual:{label:'Canal Actual',                keys:['canal actual'], opt:true},
+  medioActual:{label:'Medio Actual',                keys:['medio actual'], opt:true},
   segmento: {label:'Segmento Actual',               keys:['segmento actual']},
   fasig:    {label:'F. Asignación',                 keys:['f. asignacion','fecha asignacion','fecha de asignacion']},
   fpi:      {label:'F. Primera Interacción Manual', keys:['f. primera interaccion manual','fecha primera interaccion manual','primera interaccion manual']},
@@ -321,20 +323,27 @@ const FIELDS = {
   celular:  {label:'Celular',                       keys:['celular','telefono principal','telefono'], opt:true},
 };
 // Orden del embudo y colores derivados de la paleta de marca (rojo, negro, grises)
-const SEG_ORDER = ['nuevo','por contactar','contactado','recontactado','calificado/seguimiento potencial','cita agendada','cita realizada','separacion','no efectivos'];
+const SEG_ORDER = ['nuevo','por contactar','contactado','recontactado','calificado/seguimiento potencial','cita agendada','citas no efectivas','cita realizada','separacion','no efectivos'];
 const SEG_COLORS = {'nuevo':'#808285','por contactar':'#9C9DA0','contactado':'#55565A','recontactado':'#2E2F31',
-  'calificado/seguimiento potencial':'#F7A1B3','cita agendada':'#F24D6E','cita realizada':'#ED1944','separacion':'#8E0E29','no efectivos':'#D9DADB','(sin dato)':'#EFEFF0'};
+  'calificado/seguimiento potencial':'#F7A1B3','cita agendada':'#F24D6E','citas no efectivas':'#F24D6E','cita realizada':'#ED1944','separacion':'#8E0E29','no efectivos':'#D9DADB','(sin dato)':'#EFEFF0'};
 const PALETTE = ['#ED1944','#000000','#808285','#F5758F','#B9BABC','#8E0E29','#4A4B4D','#FAC0CC','#2E2F31','#D9DADB','#C2143A','#6B6C6F','#F9D3DB','#A5A6A8'];
 const TRAMOS = [
   {l:'< 1 h', max:1, c:'#8E0E29'}, {l:'1–4 h', max:4, c:'#ED1944'}, {l:'4–24 h', max:24, c:'#F5758F'},
   {l:'1–3 días', max:72, c:'#B9BABC'}, {l:'> 3 días', max:Infinity, c:'#808285'},
 ];
 const FUNNEL_STEPS = ['Leads asignados','Atendidos (con 1ª interacción)','Llegaron a cita','Cita realizada o más','Separación / venta'];
+// Filtros de valores (chips). Los opcionales solo aparecen si el Excel trae la columna.
+const CHIP_FILTERS = [
+  {k:'usuario', label:'Usuario asignado'},
+  {k:'canal', label:'Canal origen'}, {k:'medioOrigen', label:'Medio origen'},
+  {k:'canalActual', label:'Canal actual'}, {k:'medioActual', label:'Medio actual'},
+  {k:'proyecto', label:'Proyecto origen'},
+];
 const LS_KEY = 'gohouse.reporteLeads.ocultos';
 const PEND_LIMIT = 300;
 
 let headers = [], raw = [], rows = [], map = {};
-let state = {canalOff:new Set(), proyectoOff:new Set(), from:'', to:'', user:'', qualDim:'canal', motDim:'usuario'};
+let state = {off:Object.fromEntries(CHIP_FILTERS.map(f => [f.k, new Set()])), from:'', to:'', user:'', qualDim:'canal', motDim:'usuario'};
 let charts = {}, lastSummary = null;
 
 const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
@@ -369,8 +378,11 @@ function segRank(seg){
 const STAGE_COLORS = ['#808285','#55565A','#F24D6E','#ED1944','#8E0E29'];
 const segColor = (seg, i) => SEG_COLORS[segKey(seg)] || (isNum(stageOf(seg)) ? STAGE_COLORS[stageOf(seg)] : PALETTE[i % PALETTE.length]);
 
-function loadHidden(){ try { const o = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); state.canalOff = new Set(o.canal||[]); state.proyectoOff = new Set(o.proyecto||[]); } catch(e){} }
-function saveHidden(){ try { localStorage.setItem(LS_KEY, JSON.stringify({canal:[...state.canalOff], proyecto:[...state.proyectoOff]})); } catch(e){} }
+// Los usuarios no se recuerdan: cada archivo importado arranca con todos marcados
+const REMEMBERED = CHIP_FILTERS.filter(f => f.k !== 'usuario');
+function loadHidden(){ try { const o = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); REMEMBERED.forEach(f => state.off[f.k] = new Set(o[f.k]||[])); } catch(e){} }
+function saveHidden(){ try { localStorage.setItem(LS_KEY, JSON.stringify(Object.fromEntries(REMEMBERED.map(f => [f.k, [...state.off[f.k]]])))); } catch(e){} }
+const activeChipFilters = () => CHIP_FILTERS.filter(f => has(f.k));
 
 // ---------- Importación ----------
 const fileInput = document.getElementById('fileInput'), drop = document.getElementById('drop');
@@ -453,7 +465,8 @@ function prepare(){
     let razon = val(g(r,'razon'));
     if (razon === '(Sin dato)' && segKey(segmento).includes('desestim')) razon = '(Sin motivo registrado)';
     return { usuario: val(g(r,'usuario')), canal: val(g(r,'canal')), proyecto: val(g(r,'proyecto')), segmento, stage,
-      segGrupo: stage === 'noef' ? 'No efectivos' : segmento,
+      medioOrigen: val(g(r,'medioOrigen')), canalActual: val(g(r,'canalActual')), medioActual: val(g(r,'medioActual')),
+      segGrupo: stage === 'noef' ? 'No efectivos' : segKey(segmento) === 'cita agendada' ? 'Citas no efectivas' : segmento,
       fasig, fpi, horas: horas != null && horas >= 0 ? horas : null, reasignado: horas != null && horas < 0,
       razon, nombre: [txt(g(r,'nombres')), txt(g(r,'apellidos'))].filter(Boolean).join(' '), celular: txt(g(r,'celular')) };
   });
@@ -462,6 +475,7 @@ function prepare(){
   dF.value = state.from = ''; dT.value = state.to = '';
   if (dates.length) { dF.min = dT.min = ymd(dates[0]); dF.max = dT.max = ymd(dates[dates.length-1]); }
   state.user = '';
+  state.off.usuario.clear();
   render();
 }
 
@@ -469,23 +483,38 @@ function prepare(){
 function countBy(list, key){ const m = new Map(); list.forEach(r => m.set(r[key], (m.get(r[key])||0)+1)); return [...m.entries()].sort((a,b)=>b[1]-a[1]); }
 function groupBy(list, key){ const m = new Map(); list.forEach(r => { if (!m.has(r[key])) m.set(r[key], []); m.get(r[key]).push(r); }); return [...m.entries()].sort((a,b)=>b[1].length-a[1].length); }
 
-function buildChips(id, key, offSet){
-  const el = document.getElementById(id);
-  el.innerHTML = countBy(rows, key).map(([v,n]) =>
-    `<span class="chip ${offSet.has(v)?'':'on'}" data-v="${esc(v)}">${esc(v)}<small>${fmt(n)}</small></span>`).join('');
+// Cada fila de chips muestra cuántos leads quedan con los demás filtros aplicados
+function buildChipFilters(){
+  const el = document.getElementById('chipFilters');
+  el.innerHTML = activeChipFilters().map(f => {
+    const base = filtered(true, f.k), counts = new Map(countBy(base, f.k));
+    const isCk = f.k === 'usuario';
+    const chips = countBy(rows, f.k).map(([v]) => {
+      const off = state.off[f.k].has(v), n = fmt(counts.get(v)||0);
+      return isCk
+        ? `<label class="ck ${off?'':'on'}"><input type="checkbox" data-k="${f.k}" data-v="${esc(v)}" ${off?'':'checked'}>${esc(v)}<small>${n}</small></label>`
+        : `<span class="chip ${off?'':'on'}" data-k="${f.k}" data-v="${esc(v)}">${esc(v)}<small>${n}</small></span>`;
+    }).join('');
+    const sel = isCk ? `<span class="note">${fmt(countBy(rows, f.k).length - state.off[f.k].size)} de ${fmt(countBy(rows, f.k).length)} marcados</span>` : '';
+    return `<div class="frow"><span class="flabel">${f.label}</span>
+      <button class="btn small" data-all="${f.k}">${isCk ? 'Marcar todos' : 'Todos'}</button><button class="btn small" data-none="${f.k}">${isCk ? 'Desmarcar todos' : 'Ninguno'}</button>${sel}
+      <span class="frow">${chips}</span></div>`;
+  }).join('');
   el.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
-    const v = c.dataset.v; offSet.has(v) ? offSet.delete(v) : offSet.add(v); saveHidden(); render();
+    const set = state.off[c.dataset.k], v = c.dataset.v; set.has(v) ? set.delete(v) : set.add(v); saveHidden(); render();
   }));
+  el.querySelectorAll('.ck input').forEach(c => c.addEventListener('change', () => {
+    const set = state.off[c.dataset.k]; c.checked ? set.delete(c.dataset.v) : set.add(c.dataset.v); render();
+  }));
+  el.querySelectorAll('[data-all]').forEach(b => b.addEventListener('click', () => { state.off[b.dataset.all].clear(); saveHidden(); render(); }));
+  el.querySelectorAll('[data-none]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.none; rows.forEach(r => state.off[k].add(r[k])); saveHidden(); render(); }));
 }
-const offSetFor = k => k === 'canal' ? state.canalOff : state.proyectoOff;
-document.querySelectorAll('[data-all]').forEach(b => b.addEventListener('click', () => { offSetFor(b.dataset.all).clear(); saveHidden(); render(); }));
-document.querySelectorAll('[data-none]').forEach(b => b.addEventListener('click', () => {
-  const k = b.dataset.none, set = offSetFor(k); rows.forEach(r => set.add(r[k])); saveHidden(); render(); }));
 document.getElementById('dFrom').addEventListener('change', e => { state.from = e.target.value; render(); });
 document.getElementById('dTo').addEventListener('change', e => { state.to = e.target.value; render(); });
 document.getElementById('userSel').addEventListener('change', e => { state.user = e.target.value; render(); });
 document.getElementById('resetBtn').addEventListener('click', () => {
-  state.canalOff.clear(); state.proyectoOff.clear(); state.from = state.to = state.user = '';
+  Object.values(state.off).forEach(s => s.clear()); state.from = state.to = state.user = '';
   document.getElementById('dFrom').value = document.getElementById('dTo').value = ''; saveHidden(); render();
 });
 function bindSeg(id, key){
@@ -495,8 +524,9 @@ function bindSeg(id, key){
 }
 bindSeg('qualDim','qualDim'); bindSeg('motDim','motDim');
 
-function filtered(ignoreUser){
-  return rows.filter(r => !state.canalOff.has(r.canal) && !state.proyectoOff.has(r.proyecto)
+function filtered(ignoreUser, ignoreKey){
+  const chips = activeChipFilters().filter(f => f.k !== ignoreKey && state.off[f.k].size);
+  return rows.filter(r => chips.every(f => !state.off[f.k].has(r[f.k]))
     && (!state.from || (r.fasig && ymd(r.fasig) >= state.from))
     && (!state.to || (r.fasig && ymd(r.fasig) <= state.to))
     && (ignoreUser || !state.user || r.usuario === state.user));
@@ -504,8 +534,7 @@ function filtered(ignoreUser){
 
 function describeFilters(){
   const p = [];
-  if (state.canalOff.size) p.push(`Canales ocultos: ${[...state.canalOff].join(', ')}`);
-  if (state.proyectoOff.size) p.push(`Proyectos ocultos: ${[...state.proyectoOff].join(', ')}`);
+  activeChipFilters().forEach(f => { if (state.off[f.k].size) p.push(`${f.label} ${f.k === 'usuario' ? 'desmarcado' : 'oculto'}: ${[...state.off[f.k]].join(', ')}`); });
   if (state.from || state.to) p.push(`Asignación: ${state.from || 'inicio'} a ${state.to || 'hoy'}`);
   if (state.user) p.push(`Usuario: ${state.user}`);
   return p.join(' · ');
@@ -522,12 +551,15 @@ function stats(list){
     reasig: list.filter(r => r.reasignado).length,
     med: median(hrs),
     en24: hrs.filter(h => h <= 24).length, nHrs: hrs.length,
-    citas: st(2) + st(3),
+    citas: st(2) + st(3) + st(4),   // agendadas + realizadas + separación/venta
+    citasAg: st(2),
     citasEf: st(3),
     sep: st(4),
     alcCita: list.filter(r => isNum(r.stage) && r.stage >= 2).length,
     alcEf: list.filter(r => isNum(r.stage) && r.stage >= 3).length,
     noEf: st('noef'),
+    ef: list.filter(r => isNum(r.stage) && r.stage >= 1).length,   // contactados en adelante
+    porTrabajar: list.filter(r => r.stage === 0 || r.stage === 'otro').length,   // Nuevo / Por contactar / sin segmento
   };
 }
 
@@ -604,11 +636,14 @@ function renderKpis(list){
     ['Sin 1ª interacción', `${fmt(k.sinInter)} <small>${pct(k.sinInter,k.total)}</small>`],
     ['Mediana 1ª atención', dur(k.med)],
     ['Atendidos ≤ 24 h', pct(k.en24,k.nHrs)],
-    ['Citas', `${fmt(k.citas)} <small>${pct(k.citas,k.total)}</small>`],
-    ['Citas efectivas', `${fmt(k.citasEf)} <small>${pct(k.citasEf,k.citas)} de citas</small>`],
-    ['Separaciones', `${fmt(k.sep)} <small>${pct(k.sep,k.total)}</small>`],
-    ['No efectivos', `${fmt(k.noEf)} <small>${pct(k.noEf,k.total)}</small>`],
-  ].map(([l,v]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+    ['Total de citas', `${fmt(k.citas)} <small>${pct(k.citas,k.total)}</small>`],
+    ['Cita realizada', `${fmt(k.citasEf)} <small>${pct(k.citasEf,k.citas)} de citas</small>`],
+    ['Citas no efectivas', `${fmt(k.citasAg)} <small>${pct(k.citasAg,k.citas)} de citas</small>`],
+    ['Separación', `${fmt(k.sep)} <small>${pct(k.sep,k.citas)} de citas</small>`],
+    ['No efectivos', `${fmt(k.noEf)} <small>${pct(k.noEf,k.total)}</small>`, 'Desestimados + No contesta/seguimiento'],
+    ['Efectivos', `${fmt(k.ef)} <small>${pct(k.ef,k.total)}</small>`, 'Contactado, Recontactado, Calificado, citas y Separación (no incluye Nuevo / Por contactar)'],
+    ['Por trabajar', `${fmt(k.porTrabajar)} <small>${pct(k.porTrabajar,k.total)}</small>`, 'Nuevo / Por contactar y leads sin segmento. No efectivos + Efectivos + Por trabajar = Leads'],
+  ].map(([l,v,t]) => `<div class="kpi" ${t ? `title="${t}"` : ''}><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
 }
 
 function renderRelacion(all, users){
@@ -618,7 +653,7 @@ function renderRelacion(all, users){
     return {u, ...stats(ur), last};
   });
   const totAll = all.length, maxT = Math.max(1, ...rel.map(r=>r.total));
-  let h = `<table><thead><tr><th>Usuario asignado</th><th class="l">Leads</th><th>% del total</th><th>Sin 1ª interacción</th><th>Mediana 1ª atención</th><th>Atendidos ≤ 24 h</th><th>Citas</th><th>Citas efectivas</th><th>Separación</th><th title="Desestimados + No contesta/seguimiento">No efectivos</th><th>Última asignación</th></tr></thead><tbody>`;
+  let h = `<table><thead><tr><th>Usuario asignado</th><th class="l">Leads</th><th>% del total</th><th>Sin 1ª interacción</th><th>Mediana 1ª atención</th><th>Atendidos ≤ 24 h</th><th title="Cita realizada + Citas no efectivas + Separación">Total de citas</th><th>Cita realizada</th><th title="Leads en segmento Cita agendada">Citas no efectivas</th><th>Separación</th><th title="Desestimados + No contesta/seguimiento">No efectivos</th><th>Última asignación</th></tr></thead><tbody>`;
   rel.forEach(r => {
     const p24 = r.nHrs ? r.en24/r.nHrs : null;
     h += `<tr data-user="${esc(r.u)}" class="click ${state.user===r.u?'sel':''}"><td><b>${esc(r.u)}</b></td>
@@ -627,11 +662,11 @@ function renderRelacion(all, users){
       <td class="${r.sinInter ? 'warn' : ''}">${fmt(r.sinInter)}</td>
       <td>${dur(r.med)}</td>
       <td class="${p24 == null ? '' : p24 >= .8 ? 'good' : p24 < .5 ? 'warn' : ''}">${pct(r.en24,r.nHrs)}</td>
-      <td>${fmt(r.citas)}</td><td><b>${fmt(r.citasEf)}</b> <span class="note">${pct(r.citasEf,r.citas)}</span></td><td>${fmt(r.sep)}</td><td>${fmt(r.noEf)} <span class="note">${pct(r.noEf,r.total)}</span></td>
+      <td><b>${fmt(r.citas)}</b></td><td>${fmt(r.citasEf)}</td><td>${fmt(r.citasAg)}</td><td>${fmt(r.sep)}</td><td>${fmt(r.noEf)} <span class="note">${pct(r.noEf,r.total)}</span></td>
       <td>${r.last ? r.last.toLocaleDateString('es-PE') : '–'}</td></tr>`;
   });
   const kt = stats(all);
-  h += `</tbody><tfoot><tr class="total"><td>Total</td><td class="l">${fmt(totAll)}</td><td>100%</td><td>${fmt(kt.sinInter)}</td><td>${dur(kt.med)}</td><td>${pct(kt.en24,kt.nHrs)}</td><td>${fmt(kt.citas)}</td><td>${fmt(kt.citasEf)} <span class="note">${pct(kt.citasEf,kt.citas)}</span></td><td>${fmt(kt.sep)}</td><td>${fmt(kt.noEf)} <span class="note">${pct(kt.noEf,totAll)}</span></td><td></td></tr></tfoot></table>`;
+  h += `</tbody><tfoot><tr class="total"><td>Total</td><td class="l">${fmt(totAll)}</td><td>100%</td><td>${fmt(kt.sinInter)}</td><td>${dur(kt.med)}</td><td>${pct(kt.en24,kt.nHrs)}</td><td>${fmt(kt.citas)}</td><td>${fmt(kt.citasEf)}</td><td>${fmt(kt.citasAg)}</td><td>${fmt(kt.sep)}</td><td>${fmt(kt.noEf)} <span class="note">${pct(kt.noEf,totAll)}</span></td><td></td></tr></tfoot></table>`;
   const el = document.getElementById('tblRel');
   el.innerHTML = users.length ? h : '<div class="empty">Sin datos con los filtros actuales.</div>'; bindRowClicks(el);
   return rel;
@@ -674,15 +709,15 @@ function renderCalidad(list){
   const groups = groupBy(list, dim).map(([k, gl]) => ({k, ...stats(gl)}));
   const maxRate = Math.max(0.0001, ...groups.map(g => g.total ? g.citas/g.total : 0));
   const tot = stats(list);
-  let h = `<table><thead><tr><th>${dim === 'canal' ? 'Canal origen' : 'Proyecto origen'}</th><th>Leads</th><th>% del total</th><th>% atendidos</th><th>Mediana 1ª atención</th><th>Citas</th><th class="l">% a cita</th><th>Citas efectivas</th><th>Separaciones</th><th>No efectivos</th></tr></thead><tbody>`;
+  let h = `<table><thead><tr><th>${dim === 'canal' ? 'Canal origen' : 'Proyecto origen'}</th><th>Leads</th><th>% del total</th><th>% atendidos</th><th>Mediana 1ª atención</th><th>Total de citas</th><th class="l">% a cita</th><th>Cita realizada</th><th>Citas no efectivas</th><th>Separación</th><th>No efectivos</th></tr></thead><tbody>`;
   groups.forEach(g => {
     const r = g.total ? g.citas/g.total : 0;
     h += `<tr><td><b>${esc(g.k)}</b></td><td>${fmt(g.total)}</td><td>${pct(g.total,tot.total)}</td><td>${pct(g.atendidos,g.total)}</td><td>${dur(g.med)}</td>
       <td>${fmt(g.citas)}</td><td class="l"><span class="bar" style="width:${Math.round(80*r/maxRate)}px"></span>${pct(g.citas,g.total)}</td>
-      <td>${fmt(g.citasEf)}</td><td>${fmt(g.sep)}</td>
+      <td>${fmt(g.citasEf)}</td><td>${fmt(g.citasAg)}</td><td>${fmt(g.sep)}</td>
       <td class="${g.total && g.noEf/g.total >= .85 ? 'warn' : ''}">${fmt(g.noEf)} <span class="note">${pct(g.noEf,g.total)}</span></td></tr>`;
   });
-  h += `</tbody><tfoot><tr class="total"><td>Total</td><td>${fmt(tot.total)}</td><td>100%</td><td>${pct(tot.atendidos,tot.total)}</td><td>${dur(tot.med)}</td><td>${fmt(tot.citas)}</td><td class="l">${pct(tot.citas,tot.total)}</td><td>${fmt(tot.citasEf)}</td><td>${fmt(tot.sep)}</td><td>${fmt(tot.noEf)} <span class="note">${pct(tot.noEf,tot.total)}</span></td></tr></tfoot></table>`;
+  h += `</tbody><tfoot><tr class="total"><td>Total</td><td>${fmt(tot.total)}</td><td>100%</td><td>${pct(tot.atendidos,tot.total)}</td><td>${dur(tot.med)}</td><td>${fmt(tot.citas)}</td><td class="l">${pct(tot.citas,tot.total)}</td><td>${fmt(tot.citasEf)}</td><td>${fmt(tot.citasAg)}</td><td>${fmt(tot.sep)}</td><td>${fmt(tot.noEf)} <span class="note">${pct(tot.noEf,tot.total)}</span></td></tr></tfoot></table>`;
   document.getElementById('tblQual').innerHTML = groups.length ? h : '<div class="empty">Sin datos con los filtros actuales.</div>';
   return {canal: groupBy(list,'canal').map(([k,gl]) => ({k, ...stats(gl)})), proyecto: groupBy(list,'proyecto').map(([k,gl]) => ({k, ...stats(gl)}))};
 }
@@ -804,8 +839,7 @@ function renderPendientes(list){
 
 function render(){
   Chart.defaults.font.family = '"Mulish", system-ui, sans-serif';
-  buildChips('chipsCanal','canal',state.canalOff);
-  buildChips('chipsProyecto','proyecto',state.proyectoOff);
+  buildChipFilters();
   document.getElementById('activeFilters').textContent = describeFilters();
 
   const all = filtered(true);
@@ -838,7 +872,7 @@ function render(){
 // ---------- Exportar / imprimir ----------
 const ctSheet = (ct, label) => XLSX.utils.aoa_to_sheet([[label, ...ct.cols, 'Total'], ...ct.users.map(u => [u, ...ct.cols.map(c=>ct.m[u][c]), ct.cols.reduce((s,c)=>s+ct.m[u][c],0)])]);
 const qualRows = (g, label) => g.map(r => ({[label]:r.k, 'Leads':r.total, 'Atendidos':r.atendidos, 'Mediana 1ª atención (h)': r.med == null ? '' : +r.med.toFixed(2),
-  'Citas':r.citas, '% a cita': r.total ? +(r.citas/r.total).toFixed(4) : '', 'Citas efectivas':r.citasEf, 'Separaciones':r.sep, 'No efectivos':r.noEf}));
+  'Total de citas':r.citas, '% a cita': r.total ? +(r.citas/r.total).toFixed(4) : '', 'Cita realizada':r.citasEf, 'Citas no efectivas':r.citasAg, 'Separación':r.sep, 'No efectivos':r.noEf}));
 const pendRows = p => p.map(r => ({'Tipo':r.tipo, 'Usuario Asignado':r.usuario, 'Cliente':r.nombre, 'Celular':r.celular, 'Proyecto':r.proyecto, 'Canal':r.canal, 'Segmento':r.segmento, 'F. Asignación':r.fasig||'', 'Antigüedad (h)': r.age == null ? '' : +r.age.toFixed(1)}));
 
 document.getElementById('exportBtn').addEventListener('click', () => {
@@ -847,7 +881,7 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rel.map(r => ({
     'Usuario Asignado':r.u, 'Leads':r.total, 'Sin 1ª interacción':r.sinInter, 'Mediana 1ª atención (h)': r.med == null ? '' : +r.med.toFixed(2),
-    'Atendidos ≤ 24 h':r.en24, 'Citas':r.citas, 'Citas efectivas':r.citasEf, 'Separación':r.sep, 'No efectivos':r.noEf, 'Última asignación':r.last||''}))), 'Carga y atención');
+    'Atendidos ≤ 24 h':r.en24, 'Total de citas':r.citas, 'Cita realizada':r.citasEf, 'Citas no efectivas':r.citasAg, 'Separación':r.sep, 'No efectivos':r.noEf, 'Última asignación':r.last||''}))), 'Carga y atención');
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['Etapa','Leads','% del total'], ...FUNNEL_STEPS.map((l,i) => [l, embudo.total[i], embudo.total[0] ? +(embudo.total[i]/embudo.total[0]).toFixed(4) : ''])]), 'Embudo');
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(qualRows(calidad.canal,'Canal Origen')), 'Calidad por canal');
   XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(qualRows(calidad.proyecto,'Proyecto Origen')), 'Calidad por proyecto');
